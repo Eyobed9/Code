@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+Home
+
+{% endblock %}
+
+{% block main %}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="border-0">
+            <tr>
+                <th>Symbol</th>
+                <th>Name</th>
+                <th>Shares</th>
+                <th>Price</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+
+        <tbody class="border-0">
+            {% for data in table %}
+            <tr>
+                <td>{{ data.name }}</td>
+                <td>{{ data.name }} </td>
+                <td>{{ data.shares }}</td>
+                <td>{{ data.price | usd}}</td>
+                <td>{{ data.total | usd}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+        <tfoot class="border-0">
+            <tr>
+                <td class="border-0 fw-bold text-end" colspan="4">Cash</td>
+                <td class="border-0 text-end">{{ cash | usd }}</td>
+            </tr>
+            <tr>
+                <td class="border-0 fw-bold text-end" colspan="4">TOTAL</td>
+                <td class="border-0 w-bold text-end">{{ total | usd }}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}
