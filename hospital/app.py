@@ -3,17 +3,17 @@ import sqlite3
 
 from datetime import datetime
 from flask import Flask, redirect, render_template, request, session
-from flask_autoreload import AutoReload
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from werkzeug.serving import run_simple
 
 from helpers import login_required
 
+
 # Configure application
 app = Flask(__name__)
-app.run(debug=True)
+
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
@@ -38,6 +38,14 @@ def index():
     """Home page"""
     return render_template("homepage.html")
 
+@app.route("/appointment")
+def appointment():
+    """Schedule an appointment"""
+    # if has a medical card
+        # price and payment options
+    # else
+        # price and payment options
+    return "This is the appointment page"
 # login
  # user
  # staff
@@ -67,3 +75,6 @@ def index():
  # hospital map on google maps
 
 # for staff work schedule
+
+if __name__ == '__main__':
+    app.run(debug=True)
