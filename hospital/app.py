@@ -1,7 +1,6 @@
 import os
 import sqlite3
 
-
 from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
@@ -32,26 +31,36 @@ def after_request(response):
     return response
 
 @app.route("/")
-@login_required
 def index():
     """Home page"""
-    if request.method == "POST":
-        
-        return redirect("/homepage")
-    
     return render_template("homepage.html")
 
+# login
+ # user
+ # staff
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    """Log user in"""
-    
-    
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    """Register the user"""
-   
-    
-@app.route("/homepage")
-def homepage():
-    """Display the homepage"""
+# register
+ # user 
+ # staff
+
+# logout
+
+# info
+ # doctors
+ # specialites
+ # machines and their status 
+
+# schedule appointment
+
+# number of beds 
+ # the price 
+ # standard
+
+# pay for medical card
+ # schedule appointment
+
+# maps / dxns
+ # room maps
+ # hospital map on google maps
+
+# for staff work schedule
