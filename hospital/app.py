@@ -56,7 +56,7 @@ def index():
  # the price 
  # standard
 
-# pay for medical card
+# pay for medical card if it doesn't exist
  # schedule appointment
 
 # maps / dxns
