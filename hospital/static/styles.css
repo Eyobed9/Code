@@ -1,0 +1,16 @@
+.nav-brand {
+    font-family: 'Arial', sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+    color: hsla(192, 100%, 50%, 0.404);
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.151);
+  }
+  .nav-brand1 {
+    font-family: 'Arial', sans-serif;
+    font-size: 34px;
+    font-weight: bold;
+    color: hsla(212, 100%, 50%, 0.623);
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.151);
+  }
