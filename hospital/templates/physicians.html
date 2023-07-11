@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<form action="/physicians" method="post">
+    <select class="form-select mx-auto w-auto" name="Physicians">
+        <option disabled selected>Select</option>
+        <option value="Ethan">Dr. Ethan Reynolds</option>
+        <option value="Sophia">Dr. Sophia Anderson</option>
+        <option value="Samuel">Dr. Samuel Thompson</option>
+        <option value="Emily">Dr. Emily Martinez</option>
+        <option value="Daniel">Dr. Daniel Walker</option>
+            
+</form>
+
+{% endblock %}
