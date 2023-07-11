@@ -38,6 +38,7 @@ def index():
     """Home page"""
     return render_template("homepage.html")
 
+
 @app.route("/appointment")
 def appointment():
     """Schedule an appointment"""
@@ -46,6 +47,12 @@ def appointment():
     # else
         # price and payment options
     return "This is the appointment page"
+
+
+@app.route("/physicians")
+def physicians():
+    """ Return the page that contains the physicians info """
+    return render_template("physicians.html")
 # login
  # user
  # staff
