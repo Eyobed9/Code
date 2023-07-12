@@ -4,6 +4,9 @@ function physicians(name)
     if (name == "") {
         return;
     } 
+
+    // Fade out the image
+    document.getElementById("image").style.opacity = 0.3;
         
     // create a new ajax object
     var ajax = new XMLHttpRequest();
