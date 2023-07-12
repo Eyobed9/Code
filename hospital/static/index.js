@@ -6,7 +6,7 @@ function physicians(name)
     } 
 
     // Fade out the image
-    document.getElementById("image").style.opacity = 0.3;
+    document.getElementById("image").style.opacity = 0;
         
     // create a new ajax object
     var ajax = new XMLHttpRequest();
@@ -18,6 +18,6 @@ function physicians(name)
     };
 
     // open the requested file and transmit the date
-    ajax.open('GET', '/templates/' + name + '.html', true);
+    ajax.open('GET', 'hospital/templates/' + name + '.html', true);
     ajax.send();   
 }

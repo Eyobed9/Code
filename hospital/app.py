@@ -53,6 +53,11 @@ def appointment():
 def physicians():
     """ Return the page that contains the physicians info """
     return render_template("physicians.html")
+
+@app.route("/Samuel")
+def samuel():
+    return render_template("Samuel.html")
+
 # login
  # user
  # staff
@@ -85,4 +90,4 @@ def physicians():
 
 if __name__ == '__main__':
     app.run(debug=True)
-# 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
+# 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
