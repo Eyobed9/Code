@@ -32,14 +32,24 @@
       }
   }
 
-  .card {
-    display: inline-block;
+  .container {
+    display: flex;
+    align-items: flex-start;
   }
   
-  .card img {
-    width: 100%;
+  .image {
+    flex: 0 0 auto;
+    margin-right: 5px; 
   }
 
-  .card-body {
-    padding: 20px;
+  .card {
+    flex: 1 1 auto;
+  }
+
+  body {
+    background-color: #c2d2df;
+  }
+
+  .navbg {
+    background-color: #c3ccfd;
   }

@@ -6,14 +6,59 @@ Home
 
 {% block main %}
 
-<!-- Schedule appointment -->
-<div class="card">
-    <!--https://www.freepik.com/free-photo/purple-calendar-clock-icon-3d-reminder-notification-concept-website-ui-purple-background-3d-rendering-illustration_24656222.htm#query=appointment&position=15&from_view=search&track=sph-->
-    <img class="card-img-top" src="/static/appointment.jpg" alt="Appointments">
-    <div class="card-body">
-          <h5 class="card-text">Schedule an appointment</h5>
-          <a href="/appointment" class="btn btn-primary">Schedule now</a>
+<div class="container mb-5">
+    <!--https://www.freepik.com/free-photo/side-view-smiley-doctor-talking-patient_32338452.htm#page=6&query=black%20doctor%20with%20a%20patient&position=21&from_view=search&track=ais-->
+    <img src="/static/patient.png" alt="Doctor and patient" class="image">
+    <!-- Schedule appointment -->
+    <div class="card">
+      <!--https://www.freepik.com/free-photo/purple-calendar-clock-icon-3d-reminder-notification-concept-website-ui-purple-background-3d-rendering-illustration_24656222.htm#query=appointment&position=15&from_view=search&track=sph-->  
+      <img class="card-img-top" src="/static/appointment.jpg" alt="Appointments">
+      <div class="card-body">
+        <h5 class="card-text">Schedule an appointment</h5>
+        <a href="/appointment" class="btn btn-primary">Schedule now</a>
+      </div>
     </div>
 </div>
 
+<!--home slider-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="home-features-item">
+                <div class="home-features-item-image">
+                    <!--https://www.freepik.com/free-vector/speech-bubble-3d-icon-message-concept-realistic-speech-bubble-check-mark-chat-vector-message-box_33632370.htm#query=Trust%20Respect%20and%20Honesty%20blue%20icon&position=16&from_view=search&track=ais-->
+                    <img src="/static/Excellence.jpg" width="150" height="150" alt="Service Excellence">
+                </div>
+                <div class="home-features-item-content">
+                    <h3 class="home-features-item-title">Service Excellence</h3>
+                    <p class="home-features-item-description">Our hospital is dedicated to providing exceptional healthcare services, ensuring that our patients receive the highest level of care and satisfaction.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="home-features-item">
+                <div class="home-features-item-image" >
+                    <!--https://www.freepik.com/free-photo/hand-give-heart-into-open-palm_35467929.htm#query=Trust%20Respect%20and%20Honesty%20blue%20icon&position=15&from_view=search&track=ais-->
+                    <img src="/static/Trust.jpg" width="150" height="150" alt="Trust, Respect and Honesty">
+                </div>
+                <div class="home-features-item-content">
+                    <h3 class="home-features-item-title">Trust, Respect and Honesty</h3>
+                    <p class="home-features-item-description">We prioritize building trust with our patients, treating them with respect, and maintaining open and honest communication throughout their healthcare journey.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="home-features-item">
+                <div class="home-features-item-image">
+                    <!--https://www.freepik.com/free-vector/gradient-family-symbol_22353764.htm#query=family%20logo&position=10&from_view=keyword&track=ais-->
+                    <img src="/static/Family.jpg" width="150" height="150" alt="Responsibility and Accountability">
+                </div>
+                <div class="home-features-item-content">
+                    <h3 class="home-features-item-title">Responsibility and Accountability</h3>
+                    <p class="home-features-item-description">We take our responsibility as healthcare providers seriously, being accountable for the well-being and safety of our patients. We strive for continuous improvement and address any issues promptly and transparently.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
