@@ -8,7 +8,7 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.serving import run_simple
 
-from helpers import login_required
+from helpers import apology, login_required
 
 
 # Configure application
@@ -137,4 +137,4 @@ def physicians():
 
 if __name__ == '__main__':
     app.run(debug=True)
-# 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
+# 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
