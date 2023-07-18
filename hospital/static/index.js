@@ -5,8 +5,8 @@ function physicians(name)
         return;
     } 
 
-    // Fade out the image
-    document.getElementById("image").style.opacity = 0.3;
+    // Hide the image
+    document.getElementById("image").style.display = "none";
         
     // create a new ajax object
     var ajax = new XMLHttpRequest();
@@ -18,6 +18,6 @@ function physicians(name)
     };
 
     // open the requested file and transmit the date
-    ajax.open('GET', '/' + name + '.html', true);
+    ajax.open('GET', '/physicians?name=' + name, true);
     ajax.send();   
 }

@@ -52,11 +52,10 @@ def appointment():
 @app.route("/physicians")
 def physicians():
     """ Return the page that contains the physicians info """
+    name = request.args.get('name')
+    if name:
+        return render_template(name + '.html')
     return render_template("physicians.html")
-
-@app.route("/Samuel")
-def samuel():
-    return render_template("Samuel.html")
 
 # login
  # user
