@@ -108,8 +108,48 @@ def physicians():
     return render_template("physicians.html")
 
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """Register user"""
+
+    # If submitted via Post
+    if request.method == "POST":
+        # Get the username from the form
+        username = request.form.get("username")
+        usernames = db.execute("SELECT username FROM users;")
+
+        # Check if the user name exists and not repeated
+        if any(username in d.values() for d in usernames):
+            return apology("Username already exists", 400)
+        elif not username:
+            return apology("Must provide a username", 400)
+
+        # Get password from the form
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+
+        # Check if the passwords match and exist
+        if password != confirmation:
+            return apology("Password doesn't match", 400)
+        elif not password or not confirmation:
+            return apology("Must provide a password", 400)
+
+        # Insert the user into users table
+        hashed_password = generate_password_hash(password)
+        db.execute(
+            "INSERT INTO users(username, hash) VALUES(?, ?);", username, hashed_password
+        )
+
+        # Login the user
+        rows = db.execute("SELECT id FROM users WHERE username = ?;", username)
+        session["user_id"] = rows[0]["id"]
+        return redirect("/")
+
+    # If submitted via Get
+    else:
+        return render_template("register.html")
+
 # fogot password
-# register
  # user 
  # staff
 

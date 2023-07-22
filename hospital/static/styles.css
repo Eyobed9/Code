@@ -55,6 +55,9 @@
 
 body {
   background-color: #E6F2F8;
+  background-image: url("/static/appointment.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .navbg {
