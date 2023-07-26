@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Patient Rooms
+{% endblock %}
+
+{% block main %}
+
+<h5>Explore rooms with a click</h5>
+<div>
+    <!--https://www.freepik.com/free-photo/empty-hospital-room-with-nobody-it-having-single-bed_16047623.htm#query=Single%20Occupancy%20hospital%20Rooms&position=5&from_view=search&track=ais-->
+    <img class="clickable" id="single" src="/static/single.jpg" alt="Single bed">
+    <h4 class="mb-3">Single Occupancy Rooms</h4>
+    <!--https://www.freepik.com/free-photo/hospital-room-interior_10376248.htm#query=double%20Occupancy%20hospital%20Rooms&position=4&from_view=search&track=ais-->
+    <img class="clickable" id="double" src="/static/double.jpg" alt="Double beds">
+    <h4 class="mb-3">Double Occupancy Rooms</h4>
+    <!--https://www.freepik.com/free-photo/hospital-room-interior_13785875.htm#query=double%20Occupancy%20hospital%20Rooms&position=1&from_view=search&track=ais-->
+    <img  class="clickable" id="multiple" src="/static/multiple.jpg" alt="Multiple beds">
+    <h4 class="mb-3">Multi-Bed Rooms</h4>
+</div>
+
+
+
+{% endblock %}

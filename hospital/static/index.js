@@ -44,3 +44,17 @@ document.addEventListener("DOMContentLoaded", function() {
     // Call the changeImage function every 2.5 seconds
     setInterval(changeImage, 4500);
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("click", function(event) {
+        var target = event.target;
+        if (target.matches("#single")) {
+            window.location.href = "/single";
+        } else if (target.matches("#double")) {
+            window.location.href = "/double";
+        } else if (target.matches("#multiple")) {
+            window.location.href = "/multiple";
+        }
+    });
+});

@@ -104,3 +104,13 @@ footer {
   width: 100%;
   text-align: left;
 }
+
+.clickable {
+  cursor: pointer;
+}
+
+.small_img {
+  width: 25%;
+  height: 25%;
+  object-fit: cover;
+}

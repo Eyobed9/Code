@@ -23,7 +23,8 @@ Session(app)
 # Connect to database
 conn = sqlite3.connect('hospital.db', check_same_thread=False)
 db = conn.cursor()
-
+db.execute("CREATE TABLE IF NOT EXISTS rooms (id INTEGER PRIMARY KEY, room_type TEXT, price INTEGER, status TEXT);")
+db.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT, hash TEXT);")
 
 @app.after_request
 def after_request(response):
@@ -149,11 +150,47 @@ def register():
     else:
         return render_template("register.html")
 
+
+@app.route("/rooms")
+def rooms():
+    """ Return the page that contains the rooms info """
+    return render_template("rooms.html")
+
+
+@app.route("/single")
+def single():
+    """ Return the page that contains the single room info """
+    db.execute("INSERT OR REPLACE INTO rooms(room_type, price, status) VALUES('single', 2000, 'available');")
+    conn.commit()
+    bed = db.execute("SELECT status FROM rooms WHERE room_type = 'single';")
+    beds = bed.fetchall()[0][0]
+    return render_template("single.html", beds=beds)
+
+
+@app.route("/double")
+def double():
+    """ Return the page that contains the double room info """
+    db.execute("INSERT OR REPLACE INTO rooms(room_type, price, status) VALUES('double', 1000, 'available');")
+    conn.commit()
+    bed = db.execute("SELECT status FROM rooms WHERE room_type = 'double';")
+    beds = bed.fetchall()[0][0]
+    return render_template("double.html", beds=beds)
+
+
+@app.route("/multiple")
+def multiple():
+    """ Return the page that contains the multiple room info """
+    db.execute("INSERT OR REPLACE INTO rooms(room_type, price, status) VALUES('multiple', 500, 'available');")
+    conn.commit()
+    bed = db.execute("SELECT status FROM rooms WHERE room_type = 'multiple';")
+    beds = bed.fetchall()[0][0]
+    return render_template("multiple.html", beds=beds)
+
+
 # fogot password
  # user 
  # staff
 
-# logout
 
 # info
  # doctors
@@ -177,4 +214,7 @@ def register():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+conn.commit()
+conn.close()
 # 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
