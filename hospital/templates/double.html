@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layout0.html" %}
 
 {% block title %}
 Double rooms
@@ -8,7 +8,18 @@ Double rooms
 
 <img class="small_img" src="/static/double.jpg" alt="Double rooms">
 <div>
-    <h6>Status: {{ beds }}</h6>
+    <h6 class="text-secondary">Status: {{ beds }}</h6>
+    <h5 class="text-primary">Accommodations and services</h5>
+    <ul class="list-group">
+        <li class="list-group-item bg-light">Two beds with adjustable settings for patient comfort.</li> 
+        <li class="list-group-item body_1">Bedside tables with drawers for personal belongings.</li> 
+        <li class="list-group-item bg-light">Wardrobes for storing clothes.</li> 
+        <li class="list-group-item body_1">Chairs or recliners for visitors.</li> 
+        <li class="list-group-item bg-light">Shared television with remote control.</li> 
+        <li class="list-group-item body_1">Shared bathroom with toilet, sink, and shower.</li>
+        <li class="list-group-item bg-light">Windows with curtains or blinds for natural light.</li> 
+        <li class="list-group-item body_1">Wi-Fi access for internet connectivity.</li>
+    </ul>
 </div>
 
 {% endblock %}

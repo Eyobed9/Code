@@ -55,7 +55,6 @@
 
 .body_1 {
   background-color: #E6F2F8;
-
 }
 
 .body_2 {
@@ -114,3 +113,12 @@ footer {
   height: 25%;
   object-fit: cover;
 }
+
+.centered-text {
+  list-style-position: inside;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+

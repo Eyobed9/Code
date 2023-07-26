@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layout0.html" %}
 
 {% block title %}
 Multi-bed rooms
@@ -8,7 +8,15 @@ Multi-bed rooms
 
 <img class="small_img" src="/static/multiple.jpg" alt="Multi-bed rooms">
 <div>
-    <h6>Status: {{ beds }}</h6>
+    <h6 class="text-secondary">Status: {{ beds }}</h6>
+    <h5 class="text-primary">Accommodations and services</h5>
+    <ul class="list-group">
+        <li class="list-group-item bg-light">Multiple beds with adjustable settings for patient comfort.</li> 
+        <li class="list-group-item body_1">Bedside tables with drawers for personal belongings.</li> 
+        <li class="list-group-item bg-light">Chairs for visitors.</li> 
+        <li class="list-group-item body_1">Shared television with remote control.</li> 
+        <li class="list-group-item bg-light">Shared bathroom(s) with toilet, sink, and shower.</li> 
+    </ul>
 </div>
 
 {% endblock %}
