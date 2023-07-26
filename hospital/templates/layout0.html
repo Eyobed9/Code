@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+ 
+        <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
+        <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+         
+        <!-- https://www.freepik.com/free-vector/hospital-logo-design-vector-medical-cross_18246203.htm#query=hospital%20logo&position=34&from_view=search&track=ais-->
+        <link rel="icon" href="/static/favicon.ico"  sizes="16x16 32x32 64x64">
+        <link href="/static/styles.css" rel="stylesheet">
+        
+        <script src="/static/index.js"></script>
+        
+        <title>HealthHub: {% block title %}{% endblock %}</title>
+
+    </head>
+    
+    <body class="body_2">
+        <!-- Create a nav bar-->
+        <nav class="navbar navbg navbar-expand-lg navbar-light custom-navbar">
+            <a class="navbar-brand" href="/"><span class="nav-brand1">Health</span><span class="nav-brand">Hub</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/physicians">Physicians</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/divices">Medical divices</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/rooms">Patient rooms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/services">Services we offer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/info">About Us</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+       
+        <main class="container-fluid py-4 text-center">
+            {% block main %}{% endblock %}
+       </main>
+
+       <footer>
+            <a href="https://www.freepik.com/free-vector/medical-healthcare-blue-color_9508803.htm#query=hospital%20background&position=2&from_view=search&track=ais">Image by starline</a> on Freepik
+       </footer>
+    </body>
+
+</html>
