@@ -53,12 +53,16 @@
   height: 100%;
 }
 
-body {
+.body_1 {
   background-color: #E6F2F8;
-  background-image: url("/static/appointment.jpg");
+
+}
+
+.body_2 {
+  background-image: url("/static/background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
-}
+} 
 
 .navbg {
   background-color: #bcd1fa;
@@ -91,4 +95,12 @@ body {
 
 .slideshow-image {
   display: none;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: left;
 }
