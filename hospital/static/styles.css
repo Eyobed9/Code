@@ -122,3 +122,12 @@ footer {
   align-items: center;
 }
 
+.image_container {
+  display: flex;
+}
+
+.mid_img {
+  width: 70%;
+  height: 70%;
+  object-fit: cover;
+}
