@@ -2,7 +2,7 @@ import os
 import sqlite3
 
 from datetime import datetime
-from flask import Flask, redirect, render_template, request, session
+from flask import flash, Flask, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -25,6 +25,7 @@ conn = sqlite3.connect('hospital.db', check_same_thread=False)
 db = conn.cursor()
 db.execute("CREATE TABLE IF NOT EXISTS rooms (id INTEGER PRIMARY KEY, room_type TEXT, price INTEGER, status TEXT);")
 db.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT, hash TEXT);")
+db.execute("CREATE TABLE IF NOT EXISTS info (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, first_name TEXT, last_name TEXT, email TEXT, phone TEXT, age INTEGER, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES users(id));")
 
 @app.after_request
 def after_request(response):
@@ -115,13 +116,28 @@ def register():
 
     # If submitted via Post
     if request.method == "POST":
+        # Get the user info from the form
+        first_name = request.form.get("first_name")
+        last_name = request.form.get("last_name")
+        age = request.form.get("age")
+        phone = request.form.get("phone_number")
+        email = request.form.get("email")
+        
+        # Insert the user info into info table
+        db.execute("BEGIN TRANSACTION;")
+        db.execute("INSERT INTO info(first_name, last_name, age, phone, email) VALUES(?, ?, ?, ?, ?);", (first_name, last_name, age, phone, email))
+        db.execute("COMMIT;")
+        conn.commit()
+        
         # Get the username from the form
         username = request.form.get("username")
-        usernames = db.execute("SELECT username FROM users;")
+        usernames = db.execute("SELECT username FROM users;").fetchall()
+        usernames = [dict(username=row[0]) for row in usernames]
 
-        # Check if the user name exists and not repeated
+        # Check if the username exists and is not repeated
         if any(username in d.values() for d in usernames):
-            return apology("Username already exists", 400)
+            flash("Username already exists")
+            return redirect("/register")
         elif not username:
             return apology("Must provide a username", 400)
 
@@ -138,11 +154,13 @@ def register():
         # Insert the user into users table
         hashed_password = generate_password_hash(password)
         db.execute(
-            "INSERT INTO users(username, hash) VALUES(?, ?);", username, hashed_password
+            "INSERT INTO users(username, hash) VALUES(?, ?);", (username, hashed_password)
         )
-
+        db.execute("COMMIT;")
+        conn.commit()
+        
         # Login the user
-        rows = db.execute("SELECT id FROM users WHERE username = ?;", username)
+        rows = db.execute("SELECT id FROM users WHERE username = ?;", (username))
         session["user_id"] = rows[0]["id"]
         return redirect("/")
 

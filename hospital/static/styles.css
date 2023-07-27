@@ -131,3 +131,13 @@ footer {
   height: 70%;
   object-fit: cover;
 }
+
+.bottom {
+  position: relative;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #b2cddb;
+  padding: 20px;
+  text-align: center;
+}

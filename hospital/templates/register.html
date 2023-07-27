@@ -11,6 +11,30 @@ Register
 <form action="/register" method="post">
     <div class="mb-3">
         <input autocomplete="off" class="form-control mx-auto w-auto" required autofocus placeholder="Username" name="username" type="text">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+            {% for message in messages %}
+                <li class="text-primary">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+    </div> 
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" required autofocus placeholder="First name" name="first_name" type="text">
+    </div>
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" required autofocus placeholder="Last name" name="last_name" type="text">
+    </div>
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" autofocus placeholder="Email" name="email" type="email">
+    </div>
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" autofocus placeholder="Phone number" name="phone_number" type="text">
+    </div>
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" autofocus placeholder="Age" name="age" type="number">
     </div>
     <div class="mb-3">
         <input autocomplete="off" class="form-control mx-auto w-auto" required placeholder="Password" name="password" type="password">
