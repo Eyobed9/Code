@@ -141,3 +141,9 @@ footer {
   padding: 20px;
   text-align: center;
 }
+
+.tiny_img {
+  width: 10%;
+  height: 10%;
+  object-fit: cover;
+}

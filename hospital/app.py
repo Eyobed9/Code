@@ -36,10 +36,10 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-@app.route("/")
-def index():
-    """Home page"""
-    return render_template("homepage.html")
+@app.route("/about")
+def about():
+    """ Return the page that contains the about info """
+    return render_template("about.html")
 
 
 @app.route("/appointment")
@@ -51,6 +51,54 @@ def appointment():
         # price and payment options
     return "This is the appointment page"
 
+
+@app.route("/devices")
+def devices():
+    """ Return the page that contains the Medical devices info """
+    return render_template("devices.html")
+
+
+@app.route("/double")
+def double():
+    """ Return the page that contains the double room info """
+    availability = "available"
+    cost = 1000
+    
+    # The following code can be used to insert/update the data into the database if needed
+    '''db.execute("INSERT INTO rooms(room_type, price, status) VALUES(?, ?, ?);", ("double", 1000, "available"))
+    db.execute("UPDATE rooms SET status = ? WHERE room_type = 'double';", (availability,))
+    db.execute("UPDATE rooms SET price = ? WHERE room_type = 'double';", (cost,))
+    conn.commit()'''
+    
+    result = db.execute("SELECT price, status FROM rooms WHERE room_type = 'double';").fetchall()
+    price = result[0][0]
+    beds = result[0][1]
+    return render_template("double.html", beds=beds, price=price)
+
+
+@app.route("/")
+def index():
+    """Home page"""
+    return render_template("homepage.html")
+
+
+@app.route("/multiple")
+def multiple():
+    """ Return the page that contains the multiple room info """
+    availability = "available"
+    cost = 500
+    
+    # The following code can be used to insert/update the data into the database if needed
+    '''db.execute("INSERT INTO rooms(room_type, price, status) VALUES(?, ?, ?);", ("multiple", 500, "available"))
+    db.execute("UPDATE rooms SET status = ? WHERE room_type = 'multiple';", (availability,))
+    db.execute("UPDATE rooms SET price = ? WHERE room_type = 'multiple';", (cost,))
+    conn.commit()'''
+    
+    result = db.execute("SELECT price, status FROM rooms WHERE room_type = 'multiple';").fetchall()
+    price = result[0][0]
+    beds = result[0][1]
+    return render_template("multiple.html", beds=beds, price=price)
+    
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -189,50 +237,19 @@ def single():
     """ Return the page that contains the single room info """
     availability = "available"
     cost = 2000
-    #db.execute("INSERT INTO rooms(room_type, price, status) VALUES(?, ?, ?);", ("single", 2000, "available"))
-    '''db.execute("UPDATE rooms SET status = ? WHERE room_type = 'single';", (availability,))
+    
+    # The following code can be used to insert/update the data into the database if needed
+    '''db.execute("INSERT INTO rooms(room_type, price, status) VALUES(?, ?, ?);", ("single", 2000, "available"))
+    db.execute("UPDATE rooms SET status = ? WHERE room_type = 'single';", (availability,))
     db.execute("UPDATE rooms SET price = ? WHERE room_type = 'single';", cost)
     conn.commit()'''
+    
     result = db.execute("SELECT price, status FROM rooms WHERE room_type = 'single';").fetchall()
     price = result[0][0]
     beds = result[0][1]
     return render_template("single.html", beds=beds, price=price)
 
 
-@app.route("/double")
-def double():
-    """ Return the page that contains the double room info """
-    availability = "available"
-    cost = 1000
-    #db.execute("INSERT INTO rooms(room_type, price, status) VALUES(?, ?, ?);", ("double", 1000, "available"))
-    '''db.execute("UPDATE rooms SET status = ? WHERE room_type = 'double';", (availability,))
-    db.execute("UPDATE rooms SET price = ? WHERE room_type = 'double';", (cost,))
-    conn.commit()'''
-    result = db.execute("SELECT price, status FROM rooms WHERE room_type = 'double';").fetchall()
-    price = result[0][0]
-    beds = result[0][1]
-    return render_template("double.html", beds=beds, price=price)
-
-
-@app.route("/multiple")
-def multiple():
-    """ Return the page that contains the multiple room info """
-    availability = "available"
-    cost = 500
-    #db.execute("INSERT INTO rooms(room_type, price, status) VALUES(?, ?, ?);", ("multiple", 500, "available"))
-    '''db.execute("UPDATE rooms SET status = ? WHERE room_type = 'multiple';", (availability,))
-    db.execute("UPDATE rooms SET price = ? WHERE room_type = 'multiple';", (cost,))
-    conn.commit()'''
-    result = db.execute("SELECT price, status FROM rooms WHERE room_type = 'multiple';").fetchall()
-    price = result[0][0]
-    beds = result[0][1]
-    return render_template("multiple.html", beds=beds, price=price)
-    
-
-@app.route("/devices")
-def devices():
-    """ Return the page that contains the Medical devices info """
-    return render_template("devices.html")
 
 
 
@@ -266,4 +283,4 @@ if __name__ == '__main__':
 
 conn.commit()
 conn.close()
-# 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
+# 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
