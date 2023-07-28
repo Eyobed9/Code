@@ -8,7 +8,7 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.serving import run_simple
 
-from helpers import apology, login_required
+from helpers import login_required
 
 
 # Configure application
@@ -26,6 +26,7 @@ db = conn.cursor()
 db.execute("CREATE TABLE IF NOT EXISTS rooms (id INTEGER PRIMARY KEY, room_type TEXT, price INTEGER, status TEXT);")
 db.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT, hash TEXT);")
 db.execute("CREATE TABLE IF NOT EXISTS info (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, first_name TEXT, last_name TEXT, email TEXT, phone TEXT, age INTEGER, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES users(id));")
+db.execute("CREATE INDEX IF NOT EXISTS username ON users (username);")
 
 @app.after_request
 def after_request(response):
@@ -62,30 +63,33 @@ def login():
     if request.method == "POST":
         # Ensure username was submitted
         if not request.form.get("username"):
-            return apology("must provide username", 403)
+            flash("Must provide username")
+            return render_template("login.html")
 
         # Ensure password was submitted
         elif not request.form.get("password"):
-            return apology("must provide password", 403)
+            flash("Must provide password")
+            return render_template("login.html")
 
         # Query database for username
+        username = request.form.get("username")
         rows = db.execute(
-            "SELECT * FROM hospital WHERE username = ?;", request.form.get("username")
-        )
-
+            "SELECT * FROM users WHERE username = ?;", (username,)
+        ).fetchall()
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(
-            rows[0]["hash"], request.form.get("password")
+            rows[0][2], request.form.get("password")
         ):
-            return apology("invalid username and/or password", 403)
+            flash("Invalid username and/or password")
+            return render_template("login.html")
 
         # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        session["user_id"] = rows[0][0]
 
         # Redirect user to home page
-        return redirect("/Profile")
+        return redirect("/profile")
 
-    # User reached route via GET (as by clicking a link or via redirect)
+    # User reached route via GET 
     else:
         return render_template("login.html")
 
@@ -113,9 +117,47 @@ def physicians():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
-
+    
     # If submitted via Post
-    if request.method == "POST":
+    if request.method == "POST":     
+        # Get the username from the form
+        username = request.form.get("username")
+        usernames = db.execute("SELECT username FROM users;").fetchall()
+        usernames = [dict(username=row[0]) for row in usernames]
+
+        # Check if the username exists and is not repeated 
+        if any(username in d.values() for d in usernames):
+            flash("Username already exists")
+            return redirect("/register")
+        elif not username:
+            flash("Must provide a username")
+            return redirect("/register")
+
+        # Get password from the form
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+
+        # Check if the passwords match and exist
+        if password != confirmation:
+            flash("Password doesn't match")
+            return redirect("/register")
+        elif not password or not confirmation:
+            flash("Must provide a password")
+            return redirect("/register")
+        
+        # Insert the user into users table
+        hashed_password = generate_password_hash(password)
+        db.execute("BEGIN TRANSACTION;")
+        db.execute(
+            "INSERT INTO users(username, hash) VALUES(?, ?);", (username, hashed_password)
+        )
+        db.execute("COMMIT;")
+        conn.commit()   
+        
+        rows = db.execute("SELECT id FROM users WHERE username = ?;", (username,)).fetchall() 
+        session["user_id"] = rows[0][0]
+        ID = session["user_id"]
+        
         # Get the user info from the form
         first_name = request.form.get("first_name")
         last_name = request.form.get("last_name")
@@ -124,45 +166,12 @@ def register():
         email = request.form.get("email")
         
         # Insert the user info into info table
-        db.execute("BEGIN TRANSACTION;")
-        db.execute("INSERT INTO info(first_name, last_name, age, phone, email) VALUES(?, ?, ?, ?, ?);", (first_name, last_name, age, phone, email))
-        db.execute("COMMIT;")
-        conn.commit()
-        
-        # Get the username from the form
-        username = request.form.get("username")
-        usernames = db.execute("SELECT username FROM users;").fetchall()
-        usernames = [dict(username=row[0]) for row in usernames]
-
-        # Check if the username exists and is not repeated
-        if any(username in d.values() for d in usernames):
-            flash("Username already exists")
-            return redirect("/register")
-        elif not username:
-            return apology("Must provide a username", 400)
-
-        # Get password from the form
-        password = request.form.get("password")
-        confirmation = request.form.get("confirmation")
-
-        # Check if the passwords match and exist
-        if password != confirmation:
-            return apology("Password doesn't match", 400)
-        elif not password or not confirmation:
-            return apology("Must provide a password", 400)
-
-        # Insert the user into users table
-        hashed_password = generate_password_hash(password)
-        db.execute(
-            "INSERT INTO users(username, hash) VALUES(?, ?);", (username, hashed_password)
-        )
+        db.execute("INSERT INTO info(first_name, last_name, age, phone, email, user_id) VALUES(?, ?, ?, ?, ?, ?);", (first_name, last_name, age, phone, email, ID))
         db.execute("COMMIT;")
         conn.commit()
         
         # Login the user
-        rows = db.execute("SELECT id FROM users WHERE username = ?;", (username))
-        session["user_id"] = rows[0]["id"]
-        return redirect("/")
+        return redirect("/profile")
 
     # If submitted via Get
     else:
@@ -184,8 +193,7 @@ def single():
     '''db.execute("UPDATE rooms SET status = ? WHERE room_type = 'single';", (availability,))
     db.execute("UPDATE rooms SET price = ? WHERE room_type = 'single';", cost)
     conn.commit()'''
-    info = db.execute("SELECT price, status FROM rooms WHERE room_type = 'single';")
-    result = info.fetchall()
+    result = db.execute("SELECT price, status FROM rooms WHERE room_type = 'single';").fetchall()
     price = result[0][0]
     beds = result[0][1]
     return render_template("single.html", beds=beds, price=price)
@@ -200,8 +208,7 @@ def double():
     '''db.execute("UPDATE rooms SET status = ? WHERE room_type = 'double';", (availability,))
     db.execute("UPDATE rooms SET price = ? WHERE room_type = 'double';", (cost,))
     conn.commit()'''
-    info = db.execute("SELECT price, status FROM rooms WHERE room_type = 'double';")
-    result = info.fetchall()
+    result = db.execute("SELECT price, status FROM rooms WHERE room_type = 'double';").fetchall()
     price = result[0][0]
     beds = result[0][1]
     return render_template("double.html", beds=beds, price=price)
@@ -216,8 +223,7 @@ def multiple():
     '''db.execute("UPDATE rooms SET status = ? WHERE room_type = 'multiple';", (availability,))
     db.execute("UPDATE rooms SET price = ? WHERE room_type = 'multiple';", (cost,))
     conn.commit()'''
-    info = db.execute("SELECT price, status FROM rooms WHERE room_type = 'multiple';")
-    result = info.fetchall()
+    result = db.execute("SELECT price, status FROM rooms WHERE room_type = 'multiple';").fetchall()
     price = result[0][0]
     beds = result[0][1]
     return render_template("multiple.html", beds=beds, price=price)

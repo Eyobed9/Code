@@ -1,4 +1,4 @@
-{% extends "layout0.html" %}
+{% extends "layout.html" %}
 
 {% block title %}
 
@@ -11,15 +11,6 @@ Register
 <form action="/register" method="post">
     <div class="mb-3">
         <input autocomplete="off" class="form-control mx-auto w-auto" required autofocus placeholder="Username" name="username" type="text">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul class="flashes">
-            {% for message in messages %}
-                <li class="text-primary">{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-        {% endwith %}
     </div> 
     <div class="mb-3">
         <input autocomplete="off" class="form-control mx-auto w-auto" required autofocus placeholder="First name" name="first_name" type="text">
