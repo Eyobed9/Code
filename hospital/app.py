@@ -283,4 +283,4 @@ if __name__ == '__main__':
 
 conn.commit()
 conn.close()
-# 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
+# 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
