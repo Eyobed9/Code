@@ -138,7 +138,7 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: #b2cddb;
+  background-color: #d0ebf8;
   padding: 20px;
   text-align: center;
 }
@@ -164,4 +164,12 @@ footer {
   justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+.color_1 {
+  background-color: #d0defd;
+}
+
+.left {
+  float: left;
 }

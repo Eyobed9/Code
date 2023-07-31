@@ -1,0 +1,40 @@
+{% extends "layout0.html" %}
+
+{% block title %}
+
+Forgot Password
+
+{% endblock %}
+
+{% block main %}
+
+<h6>Please input the information you provided in the registration page</h6>
+<form action="/forgot" method="post">
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" required autofocus placeholder="Username" name="username" type="text">
+    </div> 
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" required autofocus placeholder="First name" name="first_name" type="text">
+    </div>
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" required autofocus placeholder="Last name" name="last_name" type="text">
+    </div>
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" autofocus placeholder="Email" name="email" type="email">
+    </div>
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" autofocus placeholder="Phone number" name="phone_number" type="text">
+    </div>
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" autofocus placeholder="Age" name="age" type="number">
+    </div>
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" required placeholder="Password" name="password" type="password">
+    </div>
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" required placeholder="Confirm password" name="confirmation" type="password">
+    </div>
+    <button class="btn btn-primary" type="submit">Register</button>
+</form>
+
+{% endblock %}

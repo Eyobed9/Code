@@ -89,6 +89,11 @@ def double():
     return render_template("double.html", beds=beds, price=price)
 
 
+@app.route("/forgot", method=["GET", "POST"])
+def forgot():
+    """ Change the password if the user forgot it """
+    return "This is the forgot password page"
+    
 @app.route("/multiple")
 def multiple():
     """ Return the page that contains the multiple room info """
@@ -267,18 +272,6 @@ def services():
  # user 
  # staff
 
-
-# info
- # doctors
- # specialties
- # machines and their status 
-
-# schedule appointment
-
-# number of beds 
- # the price 
- # standard
-
 # pay for medical card if it doesn't exist
  # schedule appointment
 
@@ -286,7 +279,6 @@ def services():
  # room maps
  # hospital map on google maps
 
-# for staff work schedule
 
 if __name__ == '__main__':
     app.run(debug=True)
