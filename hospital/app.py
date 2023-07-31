@@ -36,6 +36,13 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+
+@app.route("/")
+def index():
+    """Home page"""
+    return render_template("homepage.html")
+
+
 @app.route("/about")
 def about():
     """ Return the page that contains the about info """
@@ -50,6 +57,12 @@ def appointment():
     # else
         # price and payment options
     return "This is the appointment page"
+
+
+@app.route("/cancer")
+def cancer():
+    """ Return the page that contains the cancer treatment info """
+    return render_template("cancer.html")
 
 
 @app.route("/devices")
@@ -74,12 +87,6 @@ def double():
     price = result[0][0]
     beds = result[0][1]
     return render_template("double.html", beds=beds, price=price)
-
-
-@app.route("/")
-def index():
-    """Home page"""
-    return render_template("homepage.html")
 
 
 @app.route("/multiple")
@@ -250,7 +257,10 @@ def single():
     return render_template("single.html", beds=beds, price=price)
 
 
-
+@app.route("/services")
+def services():
+    """ Return the page that contains the services info """
+    return render_template("services.html")
 
 
 # forgot password

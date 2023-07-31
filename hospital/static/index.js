@@ -1,3 +1,10 @@
+window.addEventListener('load', function() {
+    var contentElements = document.getElementsByClassName('main-content');
+    for (var i = 0; i < contentElements.length; i++) {
+        contentElements[i].style.display = 'block';
+      }
+  });
+
 function physicians(name)
 {
     // if nothing is chosen

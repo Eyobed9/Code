@@ -50,6 +50,7 @@
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  flex-grow: 0;
   height: 100%;
 }
 
@@ -146,4 +147,21 @@ footer {
   width: 10%;
   height: 10%;
   object-fit: cover;
+}
+
+.main-content {
+  display: none;
+}
+
+.contain {
+  display: flex;
+  height: 20%;
+  width: 20%;
+}
+
+.wrappers {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
