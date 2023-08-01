@@ -25,7 +25,7 @@ conn = sqlite3.connect('hospital.db', check_same_thread=False)
 db = conn.cursor()
 db.execute("CREATE TABLE IF NOT EXISTS rooms (id INTEGER PRIMARY KEY, room_type TEXT, price INTEGER, status TEXT);")
 db.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT, hash TEXT);")
-db.execute("CREATE TABLE IF NOT EXISTS info (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, first_name TEXT, last_name TEXT, email TEXT, phone TEXT, age INTEGER, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES users(id));")
+db.execute("CREATE TABLE IF NOT EXISTS info (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, first_name TEXT, last_name TEXT, email TEXT, phone TEXT, age INTEGER, question TEXT, answer TEXT, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES users(id));")
 db.execute("CREATE INDEX IF NOT EXISTS username ON users (username);")
 
 @app.after_request
@@ -89,10 +89,68 @@ def double():
     return render_template("double.html", beds=beds, price=price)
 
 
-@app.route("/forgot", method=["GET", "POST"])
+@app.route("/forgot", methods=["GET", "POST"])
 def forgot():
     """ Change the password if the user forgot it """
-    return "This is the forgot password page"
+    if request.method == "POST":
+        # Ensure username was submitted
+        if not request.form.get("username"):
+            flash("Must provide username")
+            return render_template("forgot.html")
+
+        # Ensure password was submitted
+        elif not request.form.get("password"):
+            flash("Must provide password")
+            return render_template("forgot.html")
+        
+        # Ensure password was confirmed
+        elif not request.form.get("confirmation"):
+            flash("Must confirm password")
+            return render_template("forgot.html")
+        
+        # Ensure password and confirmation match
+        elif request.form.get("password") != request.form.get("confirmation"):
+            flash("Passwords must match")
+            return render_template("forgot.html")
+        
+        # Query database for username
+        username = request.form.get("username")
+        rows = db.execute(
+            "SELECT * FROM users WHERE username = ?;", (username,)
+        ).fetchall()
+        
+        # Query database for email, security question, and security answer
+        rows = db.execute("SELECT * FROM info WHERE user_id = ?;", (rows[0][0],)).fetchall()
+        
+        # Ensure username exists and password is correct
+        if len(rows) != 1:
+            flash("Invalid username")
+            return render_template("forgot.html")
+        
+        # Ensure the security question is correct
+        elif request.form.get("question1") != rows[0][6]:
+            flash("Invalid question")
+            return render_template("forgot.html")
+        
+        # Ensure the security answer is correct
+        elif request.form.get("answer1").capitalize() != rows[0][7]:
+            flash("Invalid answer")
+            return render_template("forgot.html")
+        
+        # Ensure the email is correct
+        elif request.form.get("email") != rows[0][3]:
+            flash("Invalid email")
+            return render_template("forgot.html")
+        
+        # Update the password
+        db.execute("UPDATE users SET hash = ? WHERE username = ?;", (generate_password_hash(request.form.get("password")), username,))
+        conn.commit()
+        
+        # Redirect user to login page
+        return redirect("/login")
+    else:
+        return render_template("forgot.html")
+        
     
 @app.route("/multiple")
 def multiple():
@@ -219,14 +277,16 @@ def register():
         ID = session["user_id"]
         
         # Get the user info from the form
-        first_name = request.form.get("first_name")
-        last_name = request.form.get("last_name")
+        first_name = request.form.get("first_name").capitalize()
+        last_name = request.form.get("last_name").capitalize()
         age = request.form.get("age")
         phone = request.form.get("phone_number")
         email = request.form.get("email")
-        
+        question = request.form.get("question1")
+        answer = request.form.get("answer1").capitalize()
+
         # Insert the user info into info table
-        db.execute("INSERT INTO info(first_name, last_name, age, phone, email, user_id) VALUES(?, ?, ?, ?, ?, ?);", (first_name, last_name, age, phone, email, ID))
+        db.execute("INSERT INTO info(first_name, last_name, age, phone, email, user_id, question, answer) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", (first_name, last_name, age, phone, email, ID, question, answer))
         db.execute("COMMIT;")
         conn.commit()
         

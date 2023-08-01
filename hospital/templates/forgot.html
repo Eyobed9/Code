@@ -8,33 +8,33 @@ Forgot Password
 
 {% block main %}
 
-<h6>Please input the information you provided in the registration page</h6>
+<h6 class="text-success">Please enter the information you provided during registration to reset your password</h6>
 <form action="/forgot" method="post">
     <div class="mb-3">
         <input autocomplete="off" class="form-control mx-auto w-auto" required autofocus placeholder="Username" name="username" type="text">
     </div> 
     <div class="mb-3">
-        <input autocomplete="off" class="form-control mx-auto w-auto" required autofocus placeholder="First name" name="first_name" type="text">
-    </div>
-    <div class="mb-3">
-        <input autocomplete="off" class="form-control mx-auto w-auto" required autofocus placeholder="Last name" name="last_name" type="text">
-    </div>
-    <div class="mb-3">
         <input autocomplete="off" class="form-control mx-auto w-auto" autofocus placeholder="Email" name="email" type="email">
     </div>
-    <div class="mb-3">
-        <input autocomplete="off" class="form-control mx-auto w-auto" autofocus placeholder="Phone number" name="phone_number" type="text">
+    <div class="mb-5">
+        <h6 class="text-primary">Security question</h6>
+        <select class="form-select mb-3 mx-auto w-auto" name="question1">
+            <option disabled selected>Choose a question</option>
+            <option value="What is your favorite color?">What is your favorite color?</option>
+            <option value="What is your favorite food?">What is your favorite food?</option>
+            <option value="What is your favorite animal?">What is your favorite animal?</option>
+            <option value="What is your favorite movie?">What is your favorite movie?</option>
+            <option value="What is your favorite book?">What is your favorite book?</option>
+        </select>
+        <input autocomplete="off" class="form-control mx-auto w-auto" required placeholder="Answer" name="answer1" type="text">
     </div>
     <div class="mb-3">
-        <input autocomplete="off" class="form-control mx-auto w-auto" autofocus placeholder="Age" name="age" type="number">
-    </div>
-    <div class="mb-3">
-        <input autocomplete="off" class="form-control mx-auto w-auto" required placeholder="Password" name="password" type="password">
+        <input autocomplete="off" class="form-control mx-auto w-auto" required placeholder="New password" name="password" type="password">
     </div>
     <div class="mb-3">
         <input autocomplete="off" class="form-control mx-auto w-auto" required placeholder="Confirm password" name="confirmation" type="password">
     </div>
-    <button class="btn btn-primary" type="submit">Register</button>
+    <button class="btn btn-primary" type="submit">Reset</button>
 </form>
 
 {% endblock %}
