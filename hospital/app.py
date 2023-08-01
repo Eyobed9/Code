@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import cv2
 
 from datetime import datetime
 from flask import flash, Flask, redirect, render_template, request, session
@@ -7,6 +8,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.serving import run_simple
+from werkzeug.utils import secure_filename
 
 from helpers import login_required
 
@@ -90,7 +92,7 @@ def double():
 
 
 @app.route("/forgot", methods=["GET", "POST"])
-def forgot():
+def reset():
     """ Change the password if the user forgot it """
     if request.method == "POST":
         # Ensure username was submitted
@@ -263,6 +265,16 @@ def register():
             flash("Must provide a password")
             return redirect("/register")
         
+        # Handle profile picture upload
+        profile_picture = request.files.get("profile_picture")
+        if profile_picture:
+            # Save the uploaded file to a secure location
+            filename = secure_filename(profile_picture.filename)
+            profile_picture.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+
+            # Store the file path in the database or perform any other necessary operations
+
+        # ...
         # Insert the user into users table
         hashed_password = generate_password_hash(password)
         db.execute("BEGIN TRANSACTION;")
@@ -275,7 +287,7 @@ def register():
         rows = db.execute("SELECT id FROM users WHERE username = ?;", (username,)).fetchall() 
         session["user_id"] = rows[0][0]
         ID = session["user_id"]
-        
+    
         # Get the user info from the form
         first_name = request.form.get("first_name").capitalize()
         last_name = request.form.get("last_name").capitalize()
@@ -328,16 +340,33 @@ def services():
     return render_template("services.html")
 
 
-# forgot password
- # user 
- # staff
+@app.route('/capture', methods=['POST'])
+def capture():
+    # Access the camera
+    camera = cv2.VideoCapture(0)
+    _, frame = camera.read()
+
+    # Get the username from the database
+    rows
+    # Save the captured image
+    image_path = 'captured_image.jpg'
+    cv2.imwrite(image_path, frame)
+
+    # Release the camera
+    camera.release()
+
+    return render_template('capture.html', image_path=image_path)
+
+
+
+
+
+
+
+
 
 # pay for medical card if it doesn't exist
  # schedule appointment
-
-# maps / dxns
- # room maps
- # hospital map on google maps
 
 
 if __name__ == '__main__':
