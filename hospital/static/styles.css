@@ -173,3 +173,7 @@ footer {
 .left {
   float: left;
 }
+
+.inline {
+  display: inline;
+}

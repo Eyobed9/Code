@@ -9,3 +9,12 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
+
+def registration_required(f):
+    """ Decorate routes to require registration."""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/register")
+        return f(*args, **kwargs)
+    return decorated_function

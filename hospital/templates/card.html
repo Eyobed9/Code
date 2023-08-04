@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Medical Card
+{% endblock %}
+
+{% block main %}
+
+<!-- Create and display a medical card for the user -->
+<div class="wrapper">
+    <div class="card">
+        <img class="card-img-top mid_img" src="/static/card" alt="Card">
+        <div class="card-body">
+            {% for row in info %}
+            {% for i in range(5) %}
+                <h6 class="text-primary inline">{{ ['First name:', 'Last name:', 'Email:', 'Phone number:', 'Age:'][i] }}</h6> {{ row[i] }}<br>
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

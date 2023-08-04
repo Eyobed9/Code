@@ -10,7 +10,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.serving import run_simple
 from werkzeug.utils import secure_filename
 
-from helpers import login_required
+from helpers import login_required, registration_required
 
 
 # Configure application
@@ -52,14 +52,28 @@ def about():
 
 
 @app.route("/appointment")
+@login_required
 def appointment():
     """Schedule an appointment"""
-    # if has a medical card
+    if request.method == "POST":
+        return "This is the appointment page"
         # price and payment options
     # else
         # price and payment options
-    return "This is the appointment page"
+    else:
+        return render_template("appointment.html")
 
+
+@app.route("/card")
+@registration_required
+def card():
+    """ Create a medical card for the user """
+    
+    # Get the user info from the database
+    id = session["user_id"]
+    info = db.execute("SELECT first_name, last_name, email, phone, age FROM info WHERE user_id = ?;", (id,)).fetchall()
+    
+    return render_template("card.html", info=info)
 
 @app.route("/cancer")
 def cancer():
@@ -207,7 +221,7 @@ def login():
         session["user_id"] = rows[0][0]
 
         # Redirect user to home page
-        return redirect("/profile")
+        return redirect("/")
 
     # User reached route via GET 
     else:
@@ -265,16 +279,16 @@ def register():
             flash("Must provide a password")
             return redirect("/register")
         
-        # Handle profile picture upload
+        '''# Handle profile picture upload
         profile_picture = request.files.get("profile_picture")
         if profile_picture:
             # Save the uploaded file to a secure location
             filename = secure_filename(profile_picture.filename)
             profile_picture.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
 
-            # Store the file path in the database or perform any other necessary operations
+            # Store the file path in the database or perform any other necessary operations'''
 
-        # ...
+       
         # Insert the user into users table
         hashed_password = generate_password_hash(password)
         db.execute("BEGIN TRANSACTION;")
@@ -303,7 +317,7 @@ def register():
         conn.commit()
         
         # Login the user
-        return redirect("/profile")
+        return redirect("/card")
 
     # If submitted via Get
     else:
@@ -358,20 +372,8 @@ def capture():
     return render_template('capture.html', image_path=image_path)
 
 
-
-
-
-
-
-
-
-# pay for medical card if it doesn't exist
- # schedule appointment
-
-
 if __name__ == '__main__':
     app.run(debug=True)
 
 conn.commit()
 conn.close()
-# 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

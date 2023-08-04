@@ -11,7 +11,7 @@ Register
 <form action="/register" method="post">
     <div class="mb-3">
         <input autocomplete="off" class="form-control mx-auto w-auto" required autofocus placeholder="Username" name="username" type="text">
-    </div> 
+    </div>
     <div class="mb-3">
         <input autocomplete="off" class="form-control mx-auto w-auto" required autofocus placeholder="First name" name="first_name" type="text">
     </div>
@@ -33,6 +33,10 @@ Register
     <div class="mb-3">
         <input autocomplete="off" class="form-control mx-auto w-auto" required placeholder="Confirm password" name="confirmation" type="password">
     </div>
+    <!--<div class="mb-3">
+        <h6 class="text-primary">Upload your photo</h6>
+        <input class="form-control mx-auto w-auto" required autofocus placeholder="Profile Picture" name="profile_picture" type="file">
+    </div>-->
     <div class="mb-3">
         <h6 class="text-primary">Security question</h6>
         <select class="form-select mb-3 mx-auto w-auto" name="question1">
@@ -45,10 +49,7 @@ Register
         </select>
         <input autocomplete="off" class="form-control mx-auto w-auto" required placeholder="Answer" name="answer1" type="text">
     </div>
-    <div class="mb-3 left">
-        <h6 class="text-primary">Upload your photo</h6>
-        <input class="form-control mx-auto w-auto" required autofocus placeholder="Profile Picture" name="profile_picture" type="file">
-    </div>
+    
     <button class="btn btn-primary" type="submit">Register</button>
 </form>
 
