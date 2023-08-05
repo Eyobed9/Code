@@ -279,16 +279,16 @@ def register():
             flash("Must provide a password")
             return redirect("/register")
         
-        '''# Handle profile picture upload
-        profile_picture = request.files.get("profile_picture")
-        if profile_picture:
-            # Save the uploaded file to a secure location
-            filename = secure_filename(profile_picture.filename)
-            profile_picture.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-
-            # Store the file path in the database or perform any other necessary operations'''
-
-       
+        # Handle profile picture upload
+        if 'profile_picture' in request.files:
+            file = request.files['profile_picture']
+            if file.filename != '':
+                filename = secure_filename(file.filename)
+                # Generate a new file name
+                new_filename = username + '.jpg'
+                file.save('static/' + new_filename)
+                return 'File uploaded successfully as ' + new_filename
+   
         # Insert the user into users table
         hashed_password = generate_password_hash(password)
         db.execute("BEGIN TRANSACTION;")
@@ -352,24 +352,6 @@ def single():
 def services():
     """ Return the page that contains the services info """
     return render_template("services.html")
-
-
-@app.route('/capture', methods=['POST'])
-def capture():
-    # Access the camera
-    camera = cv2.VideoCapture(0)
-    _, frame = camera.read()
-
-    # Get the username from the database
-    rows
-    # Save the captured image
-    image_path = 'captured_image.jpg'
-    cv2.imwrite(image_path, frame)
-
-    # Release the camera
-    camera.release()
-
-    return render_template('capture.html', image_path=image_path)
 
 
 if __name__ == '__main__':
