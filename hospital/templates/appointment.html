@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layout0.html" %}
 
 {% block title %}
 Appointment
@@ -6,7 +6,21 @@ Appointment
 
 {% block main %}
 
-<h1 class="text-primary">Appointment</h1>
-<input id="dob" max="9999-12-31" required type="date" value="">
+<form action="/appointment" method="post">
+    <h4 class="text-primary">Appointment</h4>
+    <div class="mb-3">
+        <h6 class="text-secondary">Pick the date</h6>
+    </div>
+    <div class="mb-3">
+        <input id="date" max="9999-12-31" required type="date" value="{{ date }}">
+    </div>
+    <div class="mb-3">
+        <h6 class="text-secondary">Pick the time</h6>
+    </div>
+    <div class="mb-3">
+        <input id="time" required type="time" value="{{ time }}">
+    </div>
+    <button class="btn btn-primary" type="submit">Schedule</button>
+</form>
 
 {% endblock %}

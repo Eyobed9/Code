@@ -16,7 +16,6 @@ from helpers import login_required, registration_required
 # Configure application
 app = Flask(__name__)
 
-
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -28,6 +27,7 @@ db = conn.cursor()
 db.execute("CREATE TABLE IF NOT EXISTS rooms (id INTEGER PRIMARY KEY, room_type TEXT, price INTEGER, status TEXT);")
 db.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT, hash TEXT);")
 db.execute("CREATE TABLE IF NOT EXISTS info (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, first_name TEXT, last_name TEXT, email TEXT, phone TEXT, age INTEGER, question TEXT, answer TEXT, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES users(id));")
+db.execute("CREATE TABLE IF NOT EXISTS appointments (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, date TEXT, time TEXT, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES users(id));")
 db.execute("CREATE INDEX IF NOT EXISTS username ON users (username);")
 
 @app.after_request
@@ -51,18 +51,36 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/appointment")
+@app.route("/appointment", methods=["GET", "POST"])
 @login_required
 def appointment():
     """Schedule an appointment"""
     if request.method == "POST":
-        return "This is the appointment page"
-        # price and payment options
-    # else
-        # price and payment options
+        
+        # Get the date and time from the user
+        date = request.form.get("date")
+        time = request.form.get("time")
+        
+        # Check if the user has inputted the date and time
+        if not date or not time:
+            flash("Must fill all fields")
+            return render_template("appointment.html", date=date, time=time)
+        
+        # Check if the user has already an appointment
+        id = session["user_id"]
+        result = db.execute("SELECT date, time FROM appointments WHERE user_id = ?;", (id,)).fetchall()
+        for i in range(len(result)):
+            if result[i][0] == date and result[i][1] == time:
+                flash("You already have an appointment at this time")
+                return render_template("appointment.html", date=date, time=time)
+        
+        # Put the date and time into the database
+        db.execute("INSERT INTO appointments(date, time, user_id) VALUES(?, ?, ?);", (date, time, id))
+        return redirect("/profile")
+        
     else:
         return render_template("appointment.html")
-
+    
 
 @app.route("/card")
 @registration_required
@@ -96,17 +114,22 @@ def changePassword():
         confirm = request.form.get("confirm")
 
         if not old or not new or not confirm:
-            return apology("Must fill all fields", 400)
+            flash("Must fill all fields")
+            return render_template("change_password.html")
         if new != confirm:
-            return apology("Password doesn't match", 400)
-
+            flash("Passwords doesn't match")
+            return render_template("change_password.html")
 
         # Ensure the old password is correct
-        row = db.execute("SELECT hash FROM users WHERE id = ?;", id)
-        if not check_password_hash(row[0]["hash"], old):
-            return apology("Invalid password", 400)
+        row = db.execute("SELECT hash FROM users WHERE id = ?;", (id, )).fetchall()
+        for i in range(33):
+            print(row)
+        if not check_password_hash(row[0][0], old):
+            flash("Invalid password")
+            return render_template("change_password.html")
+        
         hash = generate_password_hash(new)
-        db.execute("UPDATE users SET hash = ? WHERE id = ?;", hash, id)
+        db.execute("UPDATE users SET hash = ? WHERE id = ?;", (hash, id))
 
         # Redirect the user to the home page
         return redirect("/")
@@ -256,7 +279,7 @@ def login():
         session["user_id"] = rows[0][0]
 
         # Redirect user to home page
-        return redirect("/")
+        return redirect("/appointment")
 
     # User reached route via GET 
     else:
@@ -281,6 +304,17 @@ def physicians():
     if name:
         return render_template(name + '.html')
     return render_template("physicians.html")
+
+
+@app.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    """ Return the page that contains the user's profile info """
+    # Get the appointment info from the database
+    id = session["user_id"]
+    appointments = db.execute("SELECT * FROM appointments WHERE user_id = ?;", (id,)).fetchall()
+       
+    return render_template("profile.html", appointments=appointments)
 
 
 @app.route("/register", methods=["GET", "POST"])
