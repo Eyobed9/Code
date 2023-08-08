@@ -81,6 +81,41 @@ def cancer():
     return render_template("cancer.html")
 
 
+@app.route("/changePassword", methods=["GET", "POST"])
+@login_required
+def changePassword():
+    """Change the old password"""
+
+    # Get the user's id
+    id = session.get("user_id")
+
+    # if the user request via post
+    if request.method == "POST":
+        old = request.form.get("old")
+        new = request.form.get("new")
+        confirm = request.form.get("confirm")
+
+        if not old or not new or not confirm:
+            return apology("Must fill all fields", 400)
+        if new != confirm:
+            return apology("Password doesn't match", 400)
+
+
+        # Ensure the old password is correct
+        row = db.execute("SELECT hash FROM users WHERE id = ?;", id)
+        if not check_password_hash(row[0]["hash"], old):
+            return apology("Invalid password", 400)
+        hash = generate_password_hash(new)
+        db.execute("UPDATE users SET hash = ? WHERE id = ?;", hash, id)
+
+        # Redirect the user to the home page
+        return redirect("/")
+
+    # If the user request via get
+    else:
+        return render_template("change_password.html")
+
+
 @app.route("/devices")
 def devices():
     """ Return the page that contains the Medical devices info """
