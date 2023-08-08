@@ -12,13 +12,13 @@ Appointment
         <h6 class="text-secondary">Pick the date</h6>
     </div>
     <div class="mb-3">
-        <input id="date" max="9999-12-31" required type="date" value="{{ date }}">
+        <input name="date" max="9999-12-31" required type="date" value="{{ date }}">
     </div>
     <div class="mb-3">
         <h6 class="text-secondary">Pick the time</h6>
     </div>
     <div class="mb-3">
-        <input id="time" required type="time" value="{{ time }}">
+        <input name="time" required type="time" value="{{ time }}">
     </div>
     <button class="btn btn-primary" type="submit">Schedule</button>
 </form>

@@ -91,7 +91,11 @@ def card():
     id = session["user_id"]
     info = db.execute("SELECT first_name, last_name, email, phone, age FROM info WHERE user_id = ?;", (id,)).fetchall()
     
-    return render_template("card.html", info=info)
+    # Get the user's username
+    username = db.execute("SELECT username FROM users WHERE id = ?;", (id,)).fetchall()
+    username = username[0][0]
+    
+    return render_template("card.html", info=info, username=username)
 
 @app.route("/cancer")
 def cancer():
@@ -355,8 +359,8 @@ def register():
                 filename = secure_filename(file.filename)
                 # Generate a new file name
                 new_filename = username + '.jpg'
-                file.save('static/' + new_filename)
-                return 'File uploaded successfully as ' + new_filename
+                file.save('static/Profile/' + new_filename)
+        
    
         # Insert the user into users table
         hashed_password = generate_password_hash(password)

@@ -1,4 +1,4 @@
-{% extends "layout0.html" %}
+{% extends "layout.html" %}
 
 {% block title %}
 Medical Card
@@ -8,8 +8,11 @@ Medical Card
 
 <!-- Create and display a medical card for the user -->
 <div class="container">
-    <div class="card body_1">
-        <img class="card-img-top mid_img" src="/static/card" alt="Card">
+    <div class="card body_2">
+        <div class="card-title">
+            <h4 class="text-primary bg-light">Medical Card</h4>
+        </div>
+        <img class="card-img-top small_img" src="/static/Profile/{{ username }}.jpg" alt="Card">
         <div class="card-body">
             {% for row in info %}
             {% for i in range(5) %}
@@ -19,5 +22,7 @@ Medical Card
         </div>
     </div>
 </div>
-
+<!-- Display the price of the medical card for the user-->
+<h6 class="text-dark">The price of the medical card is 100 Birr</h6>
+<h6 class="text-secondary">Please bring the payment on the appointment date</h6>
 {% endblock %}
