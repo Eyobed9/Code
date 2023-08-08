@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block main %}
+
+<h4 class="text-primary">Your appointment</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rows in appointments %}
+        <tr>
+            <td>{{ rows[1] }}</td>
+            <td>{{ rows[2] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
