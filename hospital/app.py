@@ -156,14 +156,15 @@ def double():
     cost = 1000
     
     # The following code can be used to insert/update the data into the database if needed
-    '''db.execute("INSERT INTO rooms(room_type, price, status) VALUES(?, ?, ?);", ("double", 1000, "available"))
-    db.execute("UPDATE rooms SET status = ? WHERE room_type = 'double';", (availability,))
-    db.execute("UPDATE rooms SET price = ? WHERE room_type = 'double';", (cost,))
-    conn.commit()'''
+    db.execute("INSERT INTO rooms(room_type, price, status) VALUES(?, ?, ?);", ("double", 1000, "available"))
+    '''db.execute("UPDATE rooms SET status = ? WHERE room_type = 'double';", (availability,))
+    db.execute("UPDATE rooms SET price = ? WHERE room_type = 'double';", (cost,))'''
+    conn.commit()
     
     result = db.execute("SELECT price, status FROM rooms WHERE room_type = 'double';").fetchall()
-    price = result[0][0]
-    beds = result[0][1]
+    if len(result) != 0:
+        price = result[0][0]
+        beds = result[0][1]
     return render_template("double.html", beds=beds, price=price)
 
 
@@ -237,14 +238,15 @@ def multiple():
     cost = 500
     
     # The following code can be used to insert/update the data into the database if needed
-    '''db.execute("INSERT INTO rooms(room_type, price, status) VALUES(?, ?, ?);", ("multiple", 500, "available"))
-    db.execute("UPDATE rooms SET status = ? WHERE room_type = 'multiple';", (availability,))
-    db.execute("UPDATE rooms SET price = ? WHERE room_type = 'multiple';", (cost,))
-    conn.commit()'''
+    db.execute("INSERT INTO rooms(room_type, price, status) VALUES(?, ?, ?);", ("multiple", 500, "available"))
+    '''db.execute("UPDATE rooms SET status = ? WHERE room_type = 'multiple';", (availability,))
+    db.execute("UPDATE rooms SET price = ? WHERE room_type = 'multiple';", (cost,))'''
+    conn.commit()
     
     result = db.execute("SELECT price, status FROM rooms WHERE room_type = 'multiple';").fetchall()
-    price = result[0][0]
-    beds = result[0][1]
+    if len(result) != 0:
+        price = result[0][0]
+        beds = result[0][1]
     return render_template("multiple.html", beds=beds, price=price)
     
 
@@ -364,11 +366,9 @@ def register():
    
         # Insert the user into users table
         hashed_password = generate_password_hash(password)
-        db.execute("BEGIN TRANSACTION;")
         db.execute(
             "INSERT INTO users(username, hash) VALUES(?, ?);", (username, hashed_password)
         )
-        db.execute("COMMIT;")
         conn.commit()   
         
         rows = db.execute("SELECT id FROM users WHERE username = ?;", (username,)).fetchall() 
@@ -386,7 +386,6 @@ def register():
 
         # Insert the user info into info table
         db.execute("INSERT INTO info(first_name, last_name, age, phone, email, user_id, question, answer) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", (first_name, last_name, age, phone, email, ID, question, answer))
-        db.execute("COMMIT;")
         conn.commit()
         
         # Login the user
@@ -410,14 +409,16 @@ def single():
     cost = 2000
     
     # The following code can be used to insert/update the data into the database if needed
-    '''db.execute("INSERT INTO rooms(room_type, price, status) VALUES(?, ?, ?);", ("single", 2000, "available"))
-    db.execute("UPDATE rooms SET status = ? WHERE room_type = 'single';", (availability,))
-    db.execute("UPDATE rooms SET price = ? WHERE room_type = 'single';", cost)
-    conn.commit()'''
+    db.execute("INSERT INTO rooms(room_type, price, status) VALUES(?, ?, ?);", ("single", 2000, "available"))
+    '''db.execute("UPDATE rooms SET status = ? WHERE room_type = 'single';", (availability,))
+    db.execute("UPDATE rooms SET price = ? WHERE room_type = 'single';", cost)'''
+    conn.commit()
     
     result = db.execute("SELECT price, status FROM rooms WHERE room_type = 'single';").fetchall()
-    price = result[0][0]
-    beds = result[0][1]
+    
+    if len(result) != 0:
+        price = result[0][0]
+        beds = result[0][1]
     return render_template("single.html", beds=beds, price=price)
 
 
